@@ -1,0 +1,41 @@
+; Projeto de Conclusão de curso de Técnico em Eletrônica utilizando o micro controlador 8051
+; Monografia: https://drive.google.com/file/d/13yLIYZF-y1c0xYBy14vKFEdbDasOuO6S/view?usp=sharing
+
+; DOCTYPE assembly
+; assembly lang="eng" 
+
+START: mov P0,#00h          ; Configura leds verdes
+mov P1,#00h                 ; Configura leds amarelos
+mov P2,#00h                 ; Configura leds vermelhos
+sjmp sinal                  ; Salto curto para "SIGNAL"
+
+SIGNAL: mov P0,#11111111b   ; Acende leds verdes
+call DELAY2                 ; Contagem de 10 segundos
+mov P0,#00000000b           ; Apaga leds verdes
+mov P1,#11111111b           ; Acende leds amarelos
+call DELAY1                 ; Contagem de 5 segundos
+mov P1,#00000000b           ; Apaga leds amarelos
+mov P2,#11111111b           ; Acende leds vermelhos
+call DELAY2                 ; Contagem de 10 segundos
+mov P2,#00000000b           ; Apaga leds vermelhos
+ljmp SIGNAL                 ; Salto longo para "SIGNAL"
+
+DELAY 1:  mov R0,#100h
+RET1:     mov TH0,#high
+          mov TL0,#low
+          set B TR0
+          JNB TF0,$
+          CLR TF0
+          DJNZ R0, RET1
+          CLR TR0
+          RET
+          
+DELAY 2:  mov R1,#200h
+RET2:     mov TH0,#high
+          mov TL0,#low
+          set B TR0
+          JNB TF0,$
+          CLR TF0
+          DJNZ R1, RET2
+          CLR TR0
+          RET
